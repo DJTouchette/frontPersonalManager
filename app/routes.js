@@ -34,6 +34,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/signin',
+      name: 'signIn',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/SignIn/reducer'),
+          System.import('containers/SignIn/sagas'),
+          System.import('containers/SignIn'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('signIn', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

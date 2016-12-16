@@ -21,6 +21,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { useScroll } from 'react-router-scroll';
 import LanguageProvider from 'containers/LanguageProvider';
 import configureStore from './store';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
@@ -51,11 +52,17 @@ const rootRoute = {
   childRoutes: createRoutes(store),
 };
 
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import muiTheme from './muiTheme';
+
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 
 const render = (translatedMessages) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={translatedMessages}>
+      <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
         <Router
           history={history}
           routes={rootRoute}
@@ -65,7 +72,7 @@ const render = (translatedMessages) => {
             applyRouterMiddleware(useScroll())
           }
         />
-      </LanguageProvider>
+      </MuiThemeProvider>
     </Provider>,
     document.getElementById('app')
   );
