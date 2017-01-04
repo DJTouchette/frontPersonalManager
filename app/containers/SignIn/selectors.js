@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the signIn state domain
  */
-const selectSignInDomain = () => (state) => state.get('signIn');
+const selectSignInDomain = () => (state) => state.get('signIn').toJS();
 const selectFormDomain = () => (state) => state.get('form');
 
 /**
@@ -20,9 +20,10 @@ const selectFormDomain = () => (state) => state.get('form');
   (substate) => substate
 ); 
 
-const selectSignIn = () => createSelector(
-  [selectSignInDomain, selectFormDomain],
-  (signIn, form) => {form, signIn}
+export const selectSignIn = () => createSelector(
+  selectSignInDomain(), 
+  selectFormDomain(),
+  (signIn, form) => ({signIn, form})
 );
 
 export default selectForm;

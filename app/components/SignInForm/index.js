@@ -30,6 +30,7 @@ const passwordInput = (field) =>
           />;
 
 function SignInForm(props) {
+  const { err } = props;
   return (
     <form onSubmit={props.handleSubmit.bind(this)}>
     	<Card style={{ background: '#fcfcfc' }}>
@@ -37,6 +38,7 @@ function SignInForm(props) {
     		 	title="Login"
     		 />
     		<CardText>
+          { err ? <p>{err}</p> : null }
           <Field
             name="email"
             component={emailInput}

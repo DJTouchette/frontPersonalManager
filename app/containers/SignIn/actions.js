@@ -23,10 +23,16 @@ export function signInRequest(email, password) {
   };
 }
 
-export function siginInResponse(success, jwt) {
+export function siginInSuccess(jwt) {
 	return {
-	  type: ACTIONS.SIGN_IN_RESPONSE,
-	  success,
+	  type: ACTIONS.SIGN_IN_SUCCESS,
 	  jwt,
+	};
+}
+
+export function siginInFailed(err) {
+	return {
+	  type: ACTIONS.SIGN_IN_FAILED,
+    err,
 	};
 }
