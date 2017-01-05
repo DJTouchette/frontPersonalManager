@@ -1,0 +1,13 @@
+/*
+ *
+ * Home constants
+ *
+ */
+
+export const DEFAULT_ACTION = 'app/Home/DEFAULT_ACTION';
+
+export const ACTIONS = {
+	GET_TODOS_ATTEMPT: 'GET_TODOS_ATTEMPT',
+	GET_TODOS_FAILED: 'GET_TODOS_FAILED',
+	GET_TODOS_SUCCESS: 'GET_TODOS_SUCCESS',
+};

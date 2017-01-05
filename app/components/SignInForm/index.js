@@ -5,9 +5,10 @@
 */
 
 import React from 'react';
-import { TextFieldStyled, LinkStyled } from './styled';
+import { TextFieldStyled, LinkStyled, ToggleDiv } from './styled';
 import { Card, CardTitle, CardText, CardActions } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import Toggle from 'material-ui/Toggle';
 import { secondaryTextColor } from 'colors';
 import { Field, reduxForm } from 'redux-form';
 
@@ -30,15 +31,31 @@ const passwordInput = (field) =>
           />;
 
 function SignInForm(props) {
-  const { err } = props;
+  const { err, isLogin, onToggle, handleSubmit } = props;
+  let text = {
+    label: 'Signup?',
+    title: 'Login'
+  };
+
+  if (!isLogin) {
+    text.label = 'Login?';
+    text.title = 'Signup';
+  };
+
   return (
-    <form onSubmit={props.handleSubmit.bind(this)}>
+    <form onSubmit={handleSubmit.bind(this)}>
     	<Card style={{ background: '#fcfcfc' }}>
+        <ToggleDiv>
+          <Toggle
+            label={text.label}
+            onToggle={onToggle.bind(this)}
+          />
+        </ToggleDiv>
     		 <CardTitle 
-    		 	title="Login"
+    		 	title={text.title}
     		 />
     		<CardText>
-          { err ? <p>{err}</p> : null }
+          { err ? <p style={{ color: 'red' }}>{err}</p> : null }
           <Field
             name="email"
             component={emailInput}
@@ -50,21 +67,20 @@ function SignInForm(props) {
           />
 	    		<br/>
 	    		<br/>
+          { isLogin ?
 	    		<LinkStyled 
             to='/forgot'
           >
             Forgot password?
-          </LinkStyled>
+          </LinkStyled> : 
+          
+          null
+          }
     		</CardText>
         <hr style={{ maxWidth: '80%' }}/>
     		<CardActions style={{ textAlign: 'center' }}>
-      		<RaisedButton
-      			label="Signup"
-      			secondary
-            type="submit"
-      		/>
           <RaisedButton
-            label="Login"
+            label={text.title}
             secondary
             type="submit"
           />

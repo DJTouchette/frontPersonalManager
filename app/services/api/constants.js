@@ -2,7 +2,8 @@ export const API_BASE = 'http://localhost:3000/';
 export const API_VERSION = 'v1/';
 export const API = API_BASE + 'api/' + API_VERSION;
 
-export const endPoints = ['signup', 'authenticate'];
+const endPoints = ['signup', 'authenticate', 'todo/user', 'todoevent/user'];
+const keys = ['signup', 'authenticate', 'userTodos', 'userTodoEvent'];
 
 let API_ENDPOINTS = {};
 
@@ -13,7 +14,7 @@ for (let i = 0; i < endPoints.length; i ++) {
   }
 
   else {
-    API_ENDPOINTS[endpoint] = API + endpoint;
+    API_ENDPOINTS[keys[i]] = API + endpoint;
   }
   
 }

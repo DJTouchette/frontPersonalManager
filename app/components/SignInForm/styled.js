@@ -12,3 +12,7 @@ export const TextFieldStyled = styled(TextField)`
 export const LinkStyled = styled(Link)`
 	color: ${secondaryTextColor};
 `;
+
+export const ToggleDiv = styled.div`
+	padding: 5%;
+`;

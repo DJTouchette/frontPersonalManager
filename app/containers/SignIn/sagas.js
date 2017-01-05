@@ -1,27 +1,32 @@
 import { call, put } from 'redux-saga/effects';
-import { takeLatest, takeEvery } from 'redux-saga';
+import { takeLatest } from 'redux-saga';
 import Api from 'simple-json-api-wrapper';
 import { API_ENDPOINTS } from 'services/api/index';
-import { signInRequest, siginInSuccess, siginInFailed } from './actions';
+import { signInRequest, 
+  siginInSuccess, 
+  siginInFailed, 
+  signUpRequest, 
+  signUpSuccess, 
+  signUpFailed } 
+  from './actions';
 import { ACTIONS } from './constants';
+import { browserHistory } from 'react-router';
 
-// Individual exports for testing
-export function* defaultSaga() {
-  return;
-}
-
-export function* fetchSignIn(action) {
+function* fetchAuth(action, url) {
   try {
-    console.log(action);
       const { password, email } = action;
-      const userSignin = yield call(Api.post, API_ENDPOINTS.authenticate, { password, email });
-      console.log(userSignin);
+      const userSignin = yield call(Api.post, url, { password, email });
+
       if (userSignin.err) {
         return yield put(siginInFailed(userSignin.err));
       }
 
       if (userSignin.success) {
-        return yield put(siginInSuccess(userSignin.content.jwt));
+        const { jwt } = userSignin.content;
+        console.log(jwt);
+        yield localStorage.setItem('jwt', jwt);
+        yield put(siginInSuccess(jwt));
+        return yield browserHistory.push('/home');
       }
 
       yield put(siginInFailed('Something went wrong.'));
@@ -32,11 +37,24 @@ export function* fetchSignIn(action) {
    }
 }
 
+export function* fetchSignIn(action) {
+  yield fetchAuth(action, API_ENDPOINTS.authenticate);
+}
+
+export function* fetchSignUp(action) {
+  yield fetchAuth(action, API_ENDPOINTS.signup);
+}
+
 function* signUserIn() {
-  yield takeEvery(ACTIONS.SIGN_IN_ATTEMPT, fetchSignIn);
+  yield takeLatest(ACTIONS.SIGN_IN_ATTEMPT, fetchSignIn);
+}
+
+function* signUpUser() {
+  yield takeLatest(ACTIONS.SIGN_UP_ATTEMPT, fetchSignUp);
 }
 
 // All sagas to be loaded
 export default [
   signUserIn,
+  signUpUser,
 ];

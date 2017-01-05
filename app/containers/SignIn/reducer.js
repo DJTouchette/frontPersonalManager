@@ -6,7 +6,6 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
   ACTIONS,
 } from './constants';
 
@@ -28,6 +27,20 @@ function signInReducer(state = initialState, action) {
             .set('errMsg', null);
 
     case ACTIONS.SIGN_IN_FAILED:
+      return state.set('fetchingData', false)
+            .set('success', false)
+            .set('errMsg', action.err)
+
+    case ACTIONS.SIGN_UP_ATTEMPT:
+      return state.set('fetchingData', true);
+    
+    case ACTIONS.SIGN_UP_SUCCESS:
+      return state.set('fetchingData', false)
+            .set('success', true)
+            .set('jwt', action.jwt)
+            .set('errMsg', null);
+
+    case ACTIONS.SIGN_UP_FAILED:
       return state.set('fetchingData', false)
             .set('success', false)
             .set('errMsg', action.err)
